@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { componentsLibraries } from "@/components/navbar2";
+import { componentsLibraries } from "@/components/navbar";
 
 export function generateStaticParams() {
   return componentsLibraries.flatMap((category) =>
