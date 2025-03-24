@@ -24,7 +24,7 @@ export function SheetLeftbar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button variant="ghost" size="icon" className=" lg:hidden">
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle menu</span>
         </Button>
@@ -38,7 +38,7 @@ export function SheetLeftbar() {
             <Logo />
           </SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 px-4">
           <div className="flex flex-col gap-2">
             <NavMenu isSheet={true} />
           </div>

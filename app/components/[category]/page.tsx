@@ -19,13 +19,13 @@ export function generateStaticParams() {
   );
 }
 
-export default function ComponentCategoryPage({
+export default async function ComponentCategoryPage({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
   // Find the category and its items
-  const categorySlug = params.category;
+  const categorySlug = (await params).category;
 
   // Ensure componentsLibraries is an array
   const libraries = Array.isArray(componentsLibraries)

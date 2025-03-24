@@ -66,9 +66,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="px-4">
-            <Navbar />
-          </div>
+          <Navbar />
+
           <main>{children}</main>
         </ThemeProvider>
       </body>
