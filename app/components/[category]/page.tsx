@@ -5,23 +5,38 @@ import { notFound } from "next/navigation";
 import { componentsLibraries } from "@/components/navbar";
 
 export function generateStaticParams() {
-  return componentsLibraries.flatMap((category) =>
-    category.items.map((item) => ({
-      category: item.href.split("/").pop(),
-    }))
+  // Make sure componentsLibraries is an array
+  const libraries = Array.isArray(componentsLibraries)
+    ? componentsLibraries
+    : [];
+
+  return libraries.flatMap((category) =>
+    Array.isArray(category.items)
+      ? category.items.map((item) => ({
+          category: item.href.split("/").pop(),
+        }))
+      : []
   );
 }
 
-export default async function ComponentCategoryPage({
+export default function ComponentCategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: { category: string };
 }) {
   // Find the category and its items
-  const categorySlug = (await params).category;
+  const categorySlug = params.category;
+
+  // Ensure componentsLibraries is an array
+  const libraries = Array.isArray(componentsLibraries)
+    ? componentsLibraries
+    : [];
 
   // Find the matching category item
-  const allItems = componentsLibraries.flatMap((category) => category.items);
+  const allItems = libraries.flatMap((category) =>
+    Array.isArray(category.items) ? category.items : []
+  );
+
   const categoryItem = allItems.find((item) =>
     item.href.endsWith(categorySlug)
   );
@@ -31,8 +46,10 @@ export default async function ComponentCategoryPage({
   }
 
   // Find the parent category
-  const parentCategory = componentsLibraries.find((category) =>
-    category.items.some((item) => item.href.endsWith(categorySlug))
+  const parentCategory = libraries.find(
+    (category) =>
+      Array.isArray(category.items) &&
+      category.items.some((item) => item.href.endsWith(categorySlug))
   );
 
   // Generate some mock components for this category
@@ -40,9 +57,11 @@ export default async function ComponentCategoryPage({
     id: i + 1,
     title: `${categoryItem.title.slice(0, -1)} ${i + 1}`,
     description: `A beautiful ${categoryItem.title.toLowerCase()} component for your next project.`,
-    image: `/placeholder.svg?height=300&width=600&text=${categoryItem.title} ${
-      i + 1
-    }`,
+    image:
+      categoryItem.preview ||
+      `/placeholder.svg?height=300&width=600&text=${categoryItem.title} ${
+        i + 1
+      }`,
   }));
 
   return (
